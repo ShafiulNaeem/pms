@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PaymentRequest;
+use App\Models\Payment;
 use Stripe\Customer;
 use Stripe\Price;
 use Stripe\Product;
@@ -81,15 +82,29 @@ class PaymentController extends Controller
         }
     }
 
-    public function success() {
+    public function success()
+    {
         try {
             $order_id = request()->order_id;
             $data = $this->orderService->getOrderById($order_id);
-            $data->status = 'completed';
+            $data->status = 'paid';
             $data->save();
+
+            # add payment info
+            $payment = Payment::create([
+                'order_id' => $order_id,
+                'product_name' => $data->product->name,
+                'amount' => $data->total_price,
+                'status' => 'success'
+            ]);
+
             return sendResponse(
                 'Payment success.',
-                $data,
+                [
+                    'order_id' => $order_id,
+                    'payment' => $payment,
+                    'order' => $data
+                ],
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {
@@ -97,15 +112,13 @@ class PaymentController extends Controller
         }
     }
 
-    public function fail() {
+    public function fail()
+    {
         try {
             $order_id = request()->order_id;
-            $data = $this->orderService->getOrderById($order_id);
-            $data->status = 'cancelled';
-            $data->save();
             return sendResponse(
                 'Payment fail.',
-                $data,
+                ['order_id' => $order_id],
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {
