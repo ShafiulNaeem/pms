@@ -41,7 +41,7 @@ class ProductTest extends TestCase
     }
     public function test_an_admin_can_update_product()
     {
-        $admin = User::find(3);
+        $admin = User::find(1);
 
         $response = $this->actingAs($admin, 'api')->putJson('/api/admin/product/update/1', [
             'name' => 'test',
@@ -53,22 +53,22 @@ class ProductTest extends TestCase
     }
     public function test_an_admin_can_delete_product()
     {
-        $admin = User::find(3);
+        $admin = User::find(1);
 
-        $response = $this->actingAs($admin, 'api')->deleteJson('/api/admin/product/delete/1');
+        $response = $this->actingAs($admin, 'api')->deleteJson('/api/admin/product/delete/2');
         $response->dump();
         $response->assertStatus(200);
     }
     public function test_an_admin_can_view_all_products()
     {
-        $admin = User::find(3);
+        $admin = User::find(1);
         $response = $this->actingAs($admin, 'api')->getJson('/api/admin/product/list?search=');
         $response->dump();
         $response->assertStatus(200);
     }
     public function test_an_admin_can_view_a_product()
     {
-        $admin = User::find(3);
+        $admin = User::find(1);
         $response = $this->actingAs($admin, 'api')->getJson('/api/admin/product/show/1');
         $response->dump();
         $response->assertStatus(200);
@@ -82,7 +82,7 @@ class ProductTest extends TestCase
     }
     public function test_an_admin_can_not__access_user_product_route()
     {
-        $admin = User::find(3);
+        $admin = User::find(1);
         $response = $this->actingAs($admin, 'api')->getJson('/api/products?search=');
         $response->dump();
         $response->assertStatus(401);

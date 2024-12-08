@@ -32,7 +32,7 @@ class PaymentController extends Controller
      * @param PaymentRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    private function pay(PaymentRequest $request)
+    public function pay(PaymentRequest $request)
     {
         try {
             $data =  $this->orderService->getOrderById($request->order_id);
@@ -81,11 +81,14 @@ class PaymentController extends Controller
             return sendInternalServerError($e);
         }
     }
-
+    /**
+     * Payment success
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function success()
     {
         try {
-            $order_id = request()->order_id;
+            $order_id = request()->order_id ?? null;
             $data = $this->orderService->getOrderById($order_id);
             $data->status = 'paid';
             $data->save();
@@ -111,11 +114,14 @@ class PaymentController extends Controller
             return sendInternalServerError($e);
         }
     }
-
+    /**
+     * Payment fail
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function fail()
     {
         try {
-            $order_id = request()->order_id;
+            $order_id = request()->order_id ?? null;
             return sendResponse(
                 'Payment fail.',
                 ['order_id' => $order_id],

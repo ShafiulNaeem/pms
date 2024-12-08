@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
     /** @test */
     public function a_user_can_register()
     {

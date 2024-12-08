@@ -16,7 +16,7 @@ class OrderService
         # filter
         $data = $this->filterOrders($data, $params);
 
-        return $data->paginate(perPage($params['per_page']));
+        return $data->paginate(perPage($params));
     }
     /**
      * Filter orders

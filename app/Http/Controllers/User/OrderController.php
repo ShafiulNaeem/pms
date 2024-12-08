@@ -39,7 +39,7 @@ class OrderController extends Controller
             return sendResponse(
                 'Order created successfully.',
                 $order,
-                Response::HTTP_CREATED
+                Response::HTTP_OK
             );
         } catch (\Exception $e) {
             return sendInternalServerError($e);
