@@ -63,13 +63,18 @@ if (!function_exists('sendInternalServerError')) {
             ];
         }
 
-        $response = [
-            'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-            'success' => false,
-            'message' => 'Something went wrong.',
-            'data' => []
+        // $response = [
+        //     'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+        //     'success' => false,
+        //     'message' => 'Something went wrong.',
+        //     'data' => []
+        // ];
+        $response['errors'] = [
+            'message' => $exception->getMessage(),
+            'line' => $exception->getLine(),
+            // 'file' => $exception->getFile(),
+            // 'trace' => $exception->getTrace(),
         ];
-
         return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
