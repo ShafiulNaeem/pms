@@ -26,7 +26,7 @@ class PaymentTest extends TestCase
     }
     public function test_payment_failure()
     {
-        $response = $this->get('/api/payment-failure?order_id=1');
+        $response = $this->get('/api/payment-failure');
         $response->dump();
         $response->assertStatus(200);
     }

@@ -89,24 +89,24 @@ class PaymentController extends Controller
     {
         try {
             $order_id = request()->order_id ?? null;
-            $data = $this->orderService->getOrderById($order_id);
-            $data->status = 'paid';
-            $data->save();
+            if ($order_id) {
 
-            # add payment info
-            $payment = Payment::create([
-                'order_id' => $order_id,
-                'product_name' => $data->product->name,
-                'amount' => $data->total_price,
-                'status' => 'success'
-            ]);
+                $data = $this->orderService->getOrderById($order_id);
+                $data->status = 'paid';
+                $data->save();
 
+                # add payment info
+                $payment = Payment::create([
+                    'order_id' => $order_id,
+                    'product_name' => $data->product->name,
+                    'amount' => $data->total_price,
+                    'status' => 'success'
+                ]);
+            }
             return sendResponse(
                 'Payment success.',
                 [
-                    'order_id' => $order_id,
-                    'payment' => $payment,
-                    'order' => $data
+                    'order_id' => $order_id
                 ],
                 Response::HTTP_OK
             );
